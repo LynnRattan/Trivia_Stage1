@@ -58,13 +58,13 @@ INSERT INTO [Status] (name) values('approved');
 INSERT INTO [Status] (name) values('notApproved');
 INSERT INTO [Status] (name) values('waiting');
 
-INSERT INTO [Questions] (questionId, subjectCode, text, correctAns, wrongAns1, wrongAns2, wrongAns3, createdBy, statusCode) values(1, 1, 'How many km are in a marathon?','42.4','3.2','100','1', '',1);
+INSERT INTO [Questions] (questionId, subjectCode, text, correctAns, wrongAns1, wrongAns2, wrongAns3, createdBy, statusCode) values(1, 1, 'How many km are in a marathon?','42.4','3.2','100','1', 'ronen@gmail.com',1);
 
-INSERT INTO [Questions] (questionId, subjectCode, text, correctAns, wrongAns1, wrongAns2, wrongAns3, createdBy, statusCode) values(2,2,'Who is the USA president?', 'Joe Baiden', 'Barak Obama','Donald Trump','Bibi', '',1);
+INSERT INTO [Questions] (questionId, subjectCode, text, correctAns, wrongAns1, wrongAns2, wrongAns3, createdBy, statusCode) values(2,2,'Who is the USA president?', 'Joe Baiden', 'Barak Obama','Donald Trump','Bibi', 'ronen@gmail.com',1);
 
-INSERT INTO [Questions] (questionId, subjectCode, text, correctAns, wrongAns1, wrongAns2, wrongAns3, createdBy, statusCode) values(3,3,'When did WWI started?','1914','1932','1917','1915','',1);
+INSERT INTO [Questions] (questionId, subjectCode, text, correctAns, wrongAns1, wrongAns2, wrongAns3, createdBy, statusCode) values(3,3,'When did WWI started?','1914','1932','1917','1915','ronen@gmail.com',1);
 
-INSERT INTO [Questions] (questionId, subjectCode, text, correctAns, wrongAns1, wrongAns2, wrongAns3, createdBy, statusCode) values(4,4, 'What is the atomic number of oxygen?','8','2','7','12','',1);
+INSERT INTO [Questions] (questionId, subjectCode, text, correctAns, wrongAns1, wrongAns2, wrongAns3, createdBy, statusCode) values(4,4, 'What is the atomic number of oxygen?','8','2','7','12','ronen@gmail.com',1);
 
-INSERT INTO [Questions] (questionId, subjectCode, text, correctAns, wrongAns1, wrongAns2, wrongAns3, createdBy, statusCode) values(5,5, 'What is the name og the principle in Ramon High School?', 'Hana', 'Leah', 'Rebecca','Moshe','',1);
+INSERT INTO [Questions] (questionId, subjectCode, text, correctAns, wrongAns1, wrongAns2, wrongAns3, createdBy, statusCode) values(5,5, 'What is the name og the principle in Ramon High School?', 'Hana', 'Leah', 'Rebecca','Moshe','ronen@gmail.com',1);
 
