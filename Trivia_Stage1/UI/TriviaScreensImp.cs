@@ -4,21 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
 namespace Trivia_Stage1.UI
 {
+    using Models;
     public class TriviaScreensImp:ITriviaScreens
     {
 
         //Place here any state you would like to keep during the app life time
         //For example, player login details...
-
+        Player player;
 
         //Implememnt interface here
         public bool ShowLogin()
         {
-            Console.WriteLine("Not implemented yet! Press any key to continue...");
-            Console.ReadKey(true);
+            TriviaDBContext db = new TriviaDBContext();
+
+
+            Console.WriteLine("enter mail");
+            string mail = Console.ReadLine();
+            Console.WriteLine("enter password");
+            string password = Console.ReadLine();
+            
+            
+
+            player = db.Login(mail, password);
+            //אם לא תקין
             return true;
         }
         public bool ShowSignUp()

@@ -8,7 +8,7 @@ namespace Trivia_Stage1.UI
     {
         public LoginScreen() : base("Login")
         {
-
+           
         }
 
         public override void Show()

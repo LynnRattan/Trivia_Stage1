@@ -1,4 +1,4 @@
-CREATE DATABASE[Trivia];
+CREATE DATABASE [Trivia]
 
 use [Trivia]
 
