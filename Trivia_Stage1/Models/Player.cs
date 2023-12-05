@@ -17,6 +17,10 @@ public partial class Player
     [StringLength(250)]
     public string Name { get; set; } = null!;
 
+    [Column("password")]
+    [StringLength(250)]
+    public string Password { get; set; } = null!;
+
     [Column("levelCode")]
     public int LevelCode { get; set; }
 
@@ -26,7 +30,4 @@ public partial class Player
     [ForeignKey("LevelCode")]
     [InverseProperty("Players")]
     public virtual Level LevelCodeNavigation { get; set; } = null!;
-
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<Question> Questions { get; set; } = new List<Question>();
 }

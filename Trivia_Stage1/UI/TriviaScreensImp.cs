@@ -24,15 +24,29 @@ namespace Trivia_Stage1.UI
             string mail = Console.ReadLine();
             Console.WriteLine("enter password");
             string password = Console.ReadLine();
-            
-            
 
-            player = db.Login(mail, password);
-            //אם לא תקין
-            return true;
+
+            try
+            {
+                player = db.Login(mail, password);
+                //אם לא תקין
+                while (player == null)
+                {
+                    Console.WriteLine("Cannot be found.Enter again.");
+                    Console.WriteLine("enter mail");
+                    mail = Console.ReadLine();
+                    Console.WriteLine("enter password");
+                    password = Console.ReadLine();
+                    player = db.Login(mail, password);
+                }
+                return true;
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message) ; }
+            return false;
         }
         public bool ShowSignUp()
         {
+            TriviaDBContext db = new TriviaDBContext();
             //Logout user if anyone is logged in!
             //A reference to the logged in user should be stored as a member variable
             //in this class! Example:
@@ -40,6 +54,7 @@ namespace Trivia_Stage1.UI
 
             //Loop through inputs until a user/player is created or 
             //user choose to go back to menu
+
             char c = ' ';
             while (c != 'B' && c != 'b' /*&& this.currentyPLayer == null*/)
             {
@@ -75,7 +90,7 @@ namespace Trivia_Stage1.UI
                     Console.ResetColor();
                     name = Console.ReadLine();
                 }
-
+               
                 Console.ForegroundColor = ConsoleColor.DarkBlue;
                 Console.WriteLine("Connecting to Server...");
                 Console.ResetColor();
@@ -94,14 +109,21 @@ namespace Trivia_Stage1.UI
                 }
                 
                 */
-
+                player = db.SignUp(email, name, password);
                 //Provide a proper message for example:
-                Console.WriteLine("Press (B)ack to go back or any other key to signup again...");
-                //Get another input from user
-                c = Console.ReadKey(true).KeyChar;
+                while (player == null)
+                {
+                    Console.WriteLine("Sign Up try failed.");
+                    Console.WriteLine("Press (B)ack to go back or any other key to signup again...");
+
+                    //Get another input from user
+                    c = Console.ReadKey(true).KeyChar;
+                }
             }
             //return true if signup suceeded!
-            return (false);
+            return (true);
+
+
         }
 
         public void ShowAddQuestion()

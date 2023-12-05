@@ -42,10 +42,6 @@ public partial class Question
     [Column("statusCode")]
     public int StatusCode { get; set; }
 
-    [ForeignKey("CreatedBy")]
-    [InverseProperty("Questions")]
-    public virtual Player CreatedByNavigation { get; set; } = null!;
-
     [ForeignKey("StatusCode")]
     [InverseProperty("Questions")]
     public virtual Status StatusCodeNavigation { get; set; } = null!;

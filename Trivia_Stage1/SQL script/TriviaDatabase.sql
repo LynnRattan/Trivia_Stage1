@@ -24,6 +24,7 @@ CREATE TABLE[Players]
 (
 [playerMail] nvarchar(250) PRIMARY KEY not null,
 [name] nvarchar(250) not null,
+[password] nvarchar(250) not null,
 [levelCode] int  not null FOREIGN KEY References Levels(levelCode),
 [points] int not null
 );
@@ -46,7 +47,7 @@ INSERT INTO [Levels] (name) values('rookie');
 INSERT INTO [Levels] (name) values('master');
 INSERT INTO [Levels] (name) values('manager');
 
-INSERT INTO [Players] (playerMail, name,levelCode, points ) values('ronen@gmail.com', 'Ronen',3,1000);
+INSERT INTO [Players] (playerMail, name, password, levelCode, points ) values('ronen@gmail.com', 'Ronen','1234',3,1000);
 
 INSERT INTO [Subjects] (name) values('sports');
 INSERT INTO [Subjects] (name) values('politics');
