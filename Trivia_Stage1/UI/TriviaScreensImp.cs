@@ -50,7 +50,7 @@ namespace Trivia_Stage1.UI
             //Logout user if anyone is logged in!
             //A reference to the logged in user should be stored as a member variable
             //in this class! Example:
-            Player player;
+             this.player=null;
 
            
 
@@ -111,13 +111,15 @@ namespace Trivia_Stage1.UI
                 }
 
 
-
-                //Provide a proper message for example:
+                if (this.player == null)
+                {
+                    //Provide a proper message for example:
                     Console.WriteLine("Press (B)ack to go back or any other key to signup again...");
-                
 
-                //Get another input from user
-                c = Console.ReadKey(true).KeyChar;
+
+                    //Get another input from user
+                    c = Console.ReadKey(true).KeyChar;
+                }
             }
             //return true if signup suceeded!
             Console.WriteLine("Sign Up suceeded!");
@@ -129,12 +131,19 @@ namespace Trivia_Stage1.UI
         public void ShowAddQuestion()
         {
             Console.WriteLine("Not implemented yet! Press any key to continue...");
+            TriviaDBContext db = new TriviaDBContext();
+
             Console.ReadKey(true);
         }
 
         public void ShowPendingQuestions()
         {
-            Console.WriteLine("Not implemented yet! Press any key to continue...");
+            //Console.WriteLine("Not implemented yet! Press any key to continue...");
+            TriviaDBContext db = new TriviaDBContext();
+            List<Question> q = new List<Question>();
+            q = db.PendingQuestion();
+            Console.WriteLine(q);
+            Console.WriteLine("Press any key to continue...");
             Console.ReadKey(true);
         }
         public void ShowGame()
@@ -144,7 +153,17 @@ namespace Trivia_Stage1.UI
         }
         public void ShowProfile()
         {
-            Console.WriteLine("Not implemented yet! Press any key to continue...");
+            //Console.WriteLine("Not implemented yet! Press any key to continue...");
+            TriviaDBContext db = new TriviaDBContext();
+            Player player;
+            player = db.Profile(this.player);
+            if (player==null)
+            {
+                Console.WriteLine("Not loged in. Press any key to get back...");
+                Console.ReadKey(true);
+            }
+            Console.WriteLine(player.ToString());
+            Console.WriteLine("Press any key to continue.");
             Console.ReadKey(true);
         }
 
