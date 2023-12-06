@@ -24,30 +24,29 @@ namespace Trivia_Stage1.Models
             return this.Players.Where(p => p.PlayerMail == mail).FirstOrDefault();
         }
 
-        public Player GetPlayerByName(string name)
-        {
-            return this.Players.Where(p => p.Name == name).FirstOrDefault();
-        }
+        //public Player GetPlayerByName(string name)
+        //{
+        //    return this.Players.Where(p => p.Name == name).FirstOrDefault();
+        //}
 
-       public Player SignUp(string mail, string name, string password)
+       public Player SignUp(string mail, string password, string name)
         {
-            if (GetPlayerByName(name) != null)
-                return null;
+           
             if(GetPlayerByMail(mail) != null)
                 return null;
             
-            Player p = new Player() { PlayerMail=mail, Name=name, Password=password,LevelCode=0,Points=0};
+            Player p = new Player() { PlayerMail=mail, Name=name, Password=password,LevelCode=1,Points=0};
             try
             {
                 this.Players.Add(p);
                 SaveChanges();
                 return p;
             }
-            catch
+            catch(Exception ex)
             {
                 return null;
             }
-            return null;
+            
         }
 
 

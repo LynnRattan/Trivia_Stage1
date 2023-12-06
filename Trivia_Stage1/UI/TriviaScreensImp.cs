@@ -46,17 +46,19 @@ namespace Trivia_Stage1.UI
         }
         public bool ShowSignUp()
         {
-            TriviaDBContext db = new TriviaDBContext();
+
             //Logout user if anyone is logged in!
             //A reference to the logged in user should be stored as a member variable
             //in this class! Example:
-            //this.currentyPLayer == null
+            Player player;
+
+           
 
             //Loop through inputs until a user/player is created or 
             //user choose to go back to menu
 
             char c = ' ';
-            while (c != 'B' && c != 'b' /*&& this.currentyPLayer == null*/)
+            while (c != 'B' && c != 'b' && this.player == null)
             {
                 //Clear screen
                 ClearScreenAndSetTitle("Signup");
@@ -94,33 +96,31 @@ namespace Trivia_Stage1.UI
                 Console.ForegroundColor = ConsoleColor.DarkBlue;
                 Console.WriteLine("Connecting to Server...");
                 Console.ResetColor();
-                /* Create instance of Business Logic and call the signup method
-                 * For example:
+                //Create instance of Business Logic and call the signup method
+                // *For example:
                 try
                 {
                     TriviaDBContext db = new TriviaDBContext();
-                    this.currentyPLayer = db.SignUp(email, password, name);
+                    this.player = db.SignUp(email, password, name);
                 }
                 catch (Exception ex)
                 {
-                Console.ForegroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Failed to signup! Email may already exist in DB!");
-                Console.ResetColor();
+                    Console.ResetColor();
                 }
-                
-                */
-                player = db.SignUp(email, name, password);
-                //Provide a proper message for example:
-                while (player == null)
-                {
-                    Console.WriteLine("Sign Up try failed.");
-                    Console.WriteLine("Press (B)ack to go back or any other key to signup again...");
 
-                    //Get another input from user
-                    c = Console.ReadKey(true).KeyChar;
-                }
+
+
+                //Provide a proper message for example:
+                    Console.WriteLine("Press (B)ack to go back or any other key to signup again...");
+                
+
+                //Get another input from user
+                c = Console.ReadKey(true).KeyChar;
             }
             //return true if signup suceeded!
+            Console.WriteLine("Sign Up suceeded!");
             return (true);
 
 
