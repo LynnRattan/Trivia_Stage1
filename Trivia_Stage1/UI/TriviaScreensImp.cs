@@ -13,16 +13,16 @@ namespace Trivia_Stage1.UI
         //Place here any state you would like to keep during the app life time
         //For example, player login details...
         Player player;
+        TriviaDBContext db = new TriviaDBContext();
 
         //Implememnt interface here
         public bool ShowLogin()
         {
-            TriviaDBContext db = new TriviaDBContext();
 
 
-            Console.WriteLine("enter mail");
+            Console.WriteLine("Enter mail");
             string mail = Console.ReadLine();
-            Console.WriteLine("enter password");
+            Console.WriteLine("Enter password");
             string password = Console.ReadLine();
 
 
@@ -32,10 +32,10 @@ namespace Trivia_Stage1.UI
                 //אם לא תקין
                 while (player == null)
                 {
-                    Console.WriteLine("Cannot be found.Enter again.");
-                    Console.WriteLine("enter mail");
+                    Console.WriteLine("Cannot be found. Enter again.");
+                    Console.WriteLine("Enter mail");
                     mail = Console.ReadLine();
-                    Console.WriteLine("enter password");
+                    Console.WriteLine("Enter password");
                     password = Console.ReadLine();
                     player = db.Login(mail, password);
                 }
@@ -63,7 +63,7 @@ namespace Trivia_Stage1.UI
                 //Clear screen
                 ClearScreenAndSetTitle("Signup");
 
-                Console.Write("Please Type your email: ");
+                Console.Write("Please type your email: ");
                 string email = Console.ReadLine();
                 while (!IsEmailValid(email))
                 {
@@ -73,22 +73,22 @@ namespace Trivia_Stage1.UI
                     email = Console.ReadLine();
                 }
 
-                Console.Write("Please Type your password: ");
+                Console.Write("Please type your password: ");
                 string password = Console.ReadLine();
                 while (!IsPasswordValid(password))
                 {
                     Console.ForegroundColor= ConsoleColor.Red;  
-                    Console.Write("password must be at least 4 characters! Please try again: ");
+                    Console.Write("Password must be at least 4 characters! Please try again: ");
                     Console.ResetColor();   
                     password = Console.ReadLine();
                 }
 
-                Console.Write("Please Type your Name: ");
+                Console.Write("Please type your Name: ");
                 string name = Console.ReadLine();
                 while (!IsNameValid(name))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("name must be at least 3 characters! Please try again: ");
+                    Console.Write("Name must be at least 3 characters! Please try again: ");
                     Console.ResetColor();
                     name = Console.ReadLine();
                 }
@@ -100,7 +100,6 @@ namespace Trivia_Stage1.UI
                 // *For example:
                 try
                 {
-                    TriviaDBContext db = new TriviaDBContext();
                     this.player = db.SignUp(email, password, name);
                 }
                 catch (Exception ex)
@@ -130,21 +129,116 @@ namespace Trivia_Stage1.UI
 
         public void ShowAddQuestion()
         {
-            Console.WriteLine("Not implemented yet! Press any key to continue...");
-            TriviaDBContext db = new TriviaDBContext();
+            if (player.Points == 100)
+            {
+                ClearScreenAndSetTitle("Add a Question");
+                Console.WriteLine("Add the question's text: ");
+                string text = Console.ReadLine();
+                if (text.ToLower() == "b")
+                {
+                    return;
+                }
+                Question question = new Question();
+                question.Text = text;
+                Console.WriteLine("Choose a subject: 1 - Sports, 2 - Politics, 3 - History, 4 - Science, 5 - Ramon HS");
+                int y = 0;
+                while (y == 0)
+                {
+                    int.TryParse(Console.ReadLine(), out y);
+                    if (y == 1)
+                        question.SubjectCode = 1;
+                    else if (y == 2)
+                        question.SubjectCode = 2;
+                    else if (y == 3)
+                        question.SubjectCode = 3;
+                    else if (y == 4)
+                        question.SubjectCode = 4;
+                    else if (y == 5)
+                        question.SubjectCode = 5;
+                    else y = 0;
+                }
+                string correctAns;
+                string wrongAns1;
+                string wrongAns2;
+                string wrongAns3;
+                Console.WriteLine("Add the right answer");
+                correctAns = Console.ReadLine();
+                Console.WriteLine("add the first wrong answer");
+                wrongAns1 = Console.ReadLine();
+                Console.WriteLine("add the second wrong answer");
+                wrongAns2 = Console.ReadLine();
+                Console.WriteLine("add the third wrong answer");
+                wrongAns3 = Console.ReadLine();
+                question.CorrectAns = correctAns;
+                question.WrongAns1 = wrongAns1;
+                question.WrongAns1 = wrongAns2;
+                question.WrongAns1 = wrongAns3;
+                question.StatusCode = 3;
+                question.CreatedBy = player.PlayerId;
+                db.Questions.Add(question);
 
-            Console.ReadKey(true);
+                db.SaveChanges();
+                player.Points = 0;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("You do not have permission to view this page");
+                Console.ResetColor();
+                Console.WriteLine("Press any key to continue");
+                Console.ReadKey(true);
+            }
         }
 
         public void ShowPendingQuestions()
         {
-            //Console.WriteLine("Not implemented yet! Press any key to continue...");
-            TriviaDBContext db = new TriviaDBContext();
-            List<Question> q = new List<Question>();
-            q = db.PendingQuestion();
-            Console.WriteLine(q);
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey(true);
+            if (player.LevelCode == 2 || player.LevelCode == 3)
+            {
+                char x = '5';
+                List<Question> q = new List<Question>();
+                q = db.PendingQuestion();
+                for (int i = 0; i < q.Count; i++)
+                {
+                    ClearScreenAndSetTitle("Pending Questions");
+                    Console.WriteLine(q[i]);
+                    Console.WriteLine("Press 1 to approve, 2 to reject, 3 to skip, 4 to exit");
+                    while (x == '5')
+                    {
+                        x = Console.ReadKey().KeyChar;
+                        if (x == '1')
+                        {
+                            q[i].StatusCode = 1;
+                        }
+                        else if (x == '2')
+                        {
+                            q[i].StatusCode = 2;
+                        }
+                        else if (x == '3')
+                        {
+                            q[i].StatusCode = 3;
+                        }
+                        else if (x == '4')
+                        {
+                            db.SaveChanges();
+                            return;
+                        }
+                        else
+                        {
+                            x = '5';
+                        }
+                    }
+                }
+                db.SaveChanges();
+                
+            }
+            else
+            {
+                Console.ForegroundColor= ConsoleColor.Red;
+                Console.WriteLine("You do not have permission to view this page");
+                Console.ResetColor();
+                Console.WriteLine("Press any key to continue");
+                Console.ReadKey(true);
+            }
         }
         public void ShowGame()
         {
@@ -154,7 +248,6 @@ namespace Trivia_Stage1.UI
         public void ShowProfile()
         {
             //Console.WriteLine("Not implemented yet! Press any key to continue...");
-            TriviaDBContext db = new TriviaDBContext();
             Player player;
             player = db.Profile(this.player);
             if (player==null)

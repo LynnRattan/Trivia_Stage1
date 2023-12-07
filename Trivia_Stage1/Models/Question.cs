@@ -36,11 +36,14 @@ public partial class Question
     public string WrongAns3 { get; set; } = null!;
 
     [Column("createdBy")]
-    [StringLength(250)]
-    public string CreatedBy { get; set; } = null!;
+    public int CreatedBy { get; set; }
 
     [Column("statusCode")]
     public int StatusCode { get; set; }
+
+    [ForeignKey("CreatedBy")]
+    [InverseProperty("Questions")]
+    public virtual Player CreatedByNavigation { get; set; } = null!;
 
     [ForeignKey("StatusCode")]
     [InverseProperty("Questions")]

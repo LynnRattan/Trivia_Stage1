@@ -33,23 +33,25 @@ public partial class TriviaDBContext : DbContext
     {
         modelBuilder.Entity<Level>(entity =>
         {
-            entity.HasKey(e => e.LevelCode).HasName("PK__Levels__BE500FE3D0D0C522");
+            entity.HasKey(e => e.LevelCode).HasName("PK__Levels__BE500FE39C9CE1ED");
         });
 
         modelBuilder.Entity<Player>(entity =>
         {
-            entity.HasKey(e => e.PlayerMail).HasName("PK__Players__F50BE709141330EF");
+            entity.HasKey(e => e.PlayerId).HasName("PK__Players__2CDA01F157DA24B0");
 
             entity.HasOne(d => d.LevelCodeNavigation).WithMany(p => p.Players)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Players__levelCo__440B1D61");
+                .HasConstraintName("FK__Players__levelCo__3C69FB99");
         });
 
         modelBuilder.Entity<Question>(entity =>
         {
-            entity.HasKey(e => e.QuestionId).HasName("PK__Question__6238D4B2A5B3F283");
+            entity.HasKey(e => e.QuestionId).HasName("PK__Question__6238D4B20187383F");
 
-            entity.Property(e => e.QuestionId).ValueGeneratedNever();
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.Questions)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Questions__creat__403A8C7D");
 
             entity.HasOne(d => d.StatusCodeNavigation).WithMany(p => p.Questions)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -62,12 +64,12 @@ public partial class TriviaDBContext : DbContext
 
         modelBuilder.Entity<Status>(entity =>
         {
-            entity.HasKey(e => e.StatusCode).HasName("PK__Status__AD4366F7A99A95CF");
+            entity.HasKey(e => e.StatusCode).HasName("PK__Status__AD4366F7E341B929");
         });
 
         modelBuilder.Entity<Subject>(entity =>
         {
-            entity.HasKey(e => e.SubjectCode).HasName("PK__Subjects__97E46C9660A7FC72");
+            entity.HasKey(e => e.SubjectCode).HasName("PK__Subjects__97E46C96D2C3FE3B");
         });
 
         OnModelCreatingPartial(modelBuilder);

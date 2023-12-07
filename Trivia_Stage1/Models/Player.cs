@@ -9,6 +9,9 @@ namespace Trivia_Stage1.Models;
 public partial class Player
 {
     [Key]
+    [Column("playerId")]
+    public int PlayerId { get; set; }
+
     [Column("playerMail")]
     [StringLength(250)]
     public string PlayerMail { get; set; } = null!;
@@ -30,4 +33,7 @@ public partial class Player
     [ForeignKey("LevelCode")]
     [InverseProperty("Players")]
     public virtual Level LevelCodeNavigation { get; set; } = null!;
+
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<Question> Questions { get; set; } = new List<Question>();
 }
