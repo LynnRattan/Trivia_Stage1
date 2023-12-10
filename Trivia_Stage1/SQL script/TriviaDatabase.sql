@@ -48,7 +48,7 @@ INSERT INTO [Levels] (name) values('rookie');
 INSERT INTO [Levels] (name) values('master');
 INSERT INTO [Levels] (name) values('manager');
 
-INSERT INTO [Players] (playerMail, [name], [password], levelCode, points ) values('ronen@gmail.com', 'Ronen','1234',3,100);
+INSERT INTO [Players] (playerMail, [name], [password], levelCode, points ) values('ronen@gmail.com', 'Ronen','12345',3,100);
 
 INSERT INTO [Subjects] (name) values('sports');
 INSERT INTO [Subjects] (name) values('politics');

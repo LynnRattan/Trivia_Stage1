@@ -19,7 +19,6 @@ namespace Trivia_Stage1.UI
         public bool ShowLogin()
         {
 
-
             Console.WriteLine("Enter mail");
             string mail = Console.ReadLine();
             Console.WriteLine("Enter password");
@@ -46,11 +45,10 @@ namespace Trivia_Stage1.UI
         }
         public bool ShowSignUp()
         {
-
             //Logout user if anyone is logged in!
             //A reference to the logged in user should be stored as a member variable
             //in this class! Example:
-             this.player=null;
+            player=null;
 
            
 
@@ -58,7 +56,7 @@ namespace Trivia_Stage1.UI
             //user choose to go back to menu
 
             char c = ' ';
-            while (c != 'B' && c != 'b' && this.player == null)
+            while (c != 'B' && c != 'b' && player == null)
             {
                 //Clear screen
                 ClearScreenAndSetTitle("Signup");
@@ -100,7 +98,7 @@ namespace Trivia_Stage1.UI
                 // *For example:
                 try
                 {
-                    this.player = db.SignUp(email, password, name);
+                  player = db.SignUp(email, password, name);
                 }
                 catch (Exception ex)
                 {
@@ -110,7 +108,7 @@ namespace Trivia_Stage1.UI
                 }
 
 
-                if (this.player == null)
+                if (player == null)
                 {
                     //Provide a proper message for example:
                     Console.WriteLine("Press (B)ack to go back or any other key to signup again...");
@@ -122,13 +120,14 @@ namespace Trivia_Stage1.UI
             }
             //return true if signup suceeded!
             Console.WriteLine("Sign Up suceeded!");
-            return (true);
+            return true;
 
 
         }
 
         public void ShowAddQuestion()
         {
+            
             if (player.Points == 100)
             {
                 ClearScreenAndSetTitle("Add a Question");
@@ -141,21 +140,13 @@ namespace Trivia_Stage1.UI
                 Question question = new Question();
                 question.Text = text;
                 Console.WriteLine("Choose a subject: 1 - Sports, 2 - Politics, 3 - History, 4 - Science, 5 - Ramon HS");
-                int y = 0;
-                while (y == 0)
+                int subject = int.Parse(Console.ReadLine());
+                while (subject<1 || subject>5)
                 {
-                    int.TryParse(Console.ReadLine(), out y);
-                    if (y == 1)
-                        question.SubjectCode = 1;
-                    else if (y == 2)
-                        question.SubjectCode = 2;
-                    else if (y == 3)
-                        question.SubjectCode = 3;
-                    else if (y == 4)
-                        question.SubjectCode = 4;
-                    else if (y == 5)
-                        question.SubjectCode = 5;
-                    else y = 0;
+                    Console.WriteLine("Does not exist.Please try again.");
+                    Console.WriteLine("Choose a subject: 1 - Sports, 2 - Politics, 3 - History, 4 - Science, 5 - Ramon HS");
+                    subject = int.Parse(Console.ReadLine());
+
                 }
                 string correctAns;
                 string wrongAns1;
@@ -169,15 +160,10 @@ namespace Trivia_Stage1.UI
                 wrongAns2 = Console.ReadLine();
                 Console.WriteLine("add the third wrong answer");
                 wrongAns3 = Console.ReadLine();
-                question.CorrectAns = correctAns;
-                question.WrongAns1 = wrongAns1;
-                question.WrongAns1 = wrongAns2;
-                question.WrongAns1 = wrongAns3;
-                question.StatusCode = 3;
-                question.CreatedBy = player.PlayerId;
-                db.Questions.Add(question);
+                
 
-                db.SaveChanges();
+                db.AddQuestion(player.PlayerId,subject,text,correctAns,wrongAns1,wrongAns2,wrongAns3);
+               
                 player.Points = 0;
             }
             else
@@ -247,7 +233,7 @@ namespace Trivia_Stage1.UI
         }
         public void ShowProfile()
         {
-            //Console.WriteLine("Not implemented yet! Press any key to continue...");
+            
             Player player;
             player = db.Profile(this.player);
             if (player==null)
@@ -255,7 +241,7 @@ namespace Trivia_Stage1.UI
                 Console.WriteLine("Not loged in. Press any key to get back...");
                 Console.ReadKey(true);
             }
-            Console.WriteLine(player.ToString());
+            Console.WriteLine($"player mail:{player.PlayerMail} name: {player.Name} password: {player.Password} level: {player.LevelCode} points: {player.Points}");
             Console.WriteLine("Press any key to continue.");
             Console.ReadKey(true);
         }

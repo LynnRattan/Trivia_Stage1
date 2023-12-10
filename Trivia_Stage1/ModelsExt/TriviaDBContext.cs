@@ -54,16 +54,19 @@ namespace Trivia_Stage1.Models
             return this.Questions.Where(x => x.StatusCode == 3).ToList();
         }
 
-        public void AddQuestion(string text, string correctAns,string wrongAns1, string wrongAns2, string wrongAns3)
+        public void AddQuestion(int playerId, int subject, string text, string correctAns, string wrongAns1, string wrongAns2, string wrongAns3)
         {
-            Question q = new Question() { };  //בעיה עם הID
-             //this.Questions.Add(question);
+            Question q = new Question() {CreatedBy = playerId, SubjectCode=subject, Text =text, CorrectAns=correctAns, WrongAns1=wrongAns1, WrongAns2=wrongAns2, WrongAns3=wrongAns3, StatusCode=3};  
+            this.Questions.Add(q);
+            SaveChanges();
         }
 
         public Player Profile(Player player)
         {
             return player;
         }
+            
+    
 
 
     }
