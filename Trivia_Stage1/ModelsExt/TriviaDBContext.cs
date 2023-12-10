@@ -60,10 +60,11 @@ namespace Trivia_Stage1.Models
             this.Questions.Add(q);
             SaveChanges();
         }
+        
 
         public Player Profile(Player player)
         {
-            return player;
+            return this.Players.Where(p => p == player).FirstOrDefault();
         }
             
     
