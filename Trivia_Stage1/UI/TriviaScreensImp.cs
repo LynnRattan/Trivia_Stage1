@@ -239,14 +239,14 @@ namespace Trivia_Stage1.UI
                 Console.WriteLine("Not loged in. Press any key to get back...");
                 Console.ReadKey(true);
             }
-            Console.WriteLine($"player mail:{player.PlayerMail} name: {player.Name} password: {player.Password} level: {player.LevelCode} points: {player.Points}");
+            Console.WriteLine($"player mail: {player.PlayerMail}  name: {player.Name}  password: {player.Password}  level: {player.LevelCode}  points: {player.Points}");
             char c = ' ';
-            Console.WriteLine("Press B to change your mail or C/c tou change your name.");
+            Console.WriteLine("Press B to change your mail, C/c tou change your name, A/a to change you password, or enter to continue");
             c = Console.ReadKey().KeyChar;
            while (c == 'B' || c == 'b')
             {
 
-                Console.Write("Please type your  new mail: ");
+                Console.Write(" Please type your  new mail: ");
                 string newMail = Console.ReadLine();
                 while (!IsEmailValid(newMail))
                 {
@@ -255,27 +255,50 @@ namespace Trivia_Stage1.UI
                     Console.ResetColor();
                     newMail = Console.ReadLine();
                 }
+                if(newMail==player.PlayerMail)
+                { Console.WriteLine("Already your mail."); }
                 player.PlayerMail = newMail;
-                Console.WriteLine("If you are intersted in changing your mail again press B/b else press C/c to change your name or any other key to continue.");
+                db.SaveChanges();
+                Console.WriteLine("Press B to change your mail again, C/c tou change your name, A/a to change you password, or enter continue");
                 c = Console.ReadKey().KeyChar;
 
             }
 
             while(c =='C' || c=='c')
             { 
-                Console.Write("Please type your new Name: ");
-                string name = Console.ReadLine();
-                while (!IsNameValid(name))
+                Console.Write(" Please type your new Name: ");
+                string newName = Console.ReadLine();
+                while (!IsNameValid(newName))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("Name must be at least 3 characters! Please try again: ");
                     Console.ResetColor();
-                    name = Console.ReadLine();
+                    newName = Console.ReadLine();
                 }
-                player.Name=name;
-                Console.WriteLine("If you are intersted in changing your name again press C/c else press any other key to continue.");
+                if (newName == player.Name) { Console.WriteLine("Already your name."); }
+                player.Name=newName;
+                db.SaveChanges();
+                Console.WriteLine("Press B to change your mail, C/c tou change your name again, A/a to change you password, or enter to continue.");
                 c = Console.ReadKey().KeyChar;
 
+            }
+
+            while(c=='A' || c=='a')
+            {
+                Console.Write(" Please type your password: ");
+                string newPassword = Console.ReadLine();
+                while (!IsPasswordValid(newPassword))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("Password must be at least 4 characters! Please try again: ");
+                    Console.ResetColor();
+                    newPassword = Console.ReadLine();
+                }
+                if (newPassword == player.Password) { Console.WriteLine("Already your password."); }
+                player.Password=newPassword;
+                db.SaveChanges();
+                Console.WriteLine("Press B to change your mail, C/c tou change your name, A/a to change you password again, or enter to continue.");
+                c = Console.ReadKey().KeyChar;
             }
             Console.ReadKey(true);
 
