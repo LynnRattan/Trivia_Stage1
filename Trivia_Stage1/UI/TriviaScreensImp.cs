@@ -25,8 +25,7 @@ namespace Trivia_Stage1.UI
             string password = Console.ReadLine();
 
 
-            try
-            {
+           
                 player = db.Login(mail, password);
                 //אם לא תקין
                 while (player == null)
@@ -39,8 +38,7 @@ namespace Trivia_Stage1.UI
                     player = db.Login(mail, password);
                 }
                 return true;
-            }
-            catch (Exception ex) { Console.WriteLine(ex.Message) ; }
+            
             return false;
         }
         public bool ShowSignUp()
@@ -186,7 +184,7 @@ namespace Trivia_Stage1.UI
                 for (int i = 0; i < q.Count; i++)
                 {
                     ClearScreenAndSetTitle("Pending Questions");
-                    Console.WriteLine(q[i]);
+                    Console.WriteLine($" Subject number:{q[i].SubjectCode} Question:{q[i].Text}, Correct Answer:{q[i].CorrectAns}, Wrong Answer 1:{q[i].WrongAns1},   Wrong Answer 2: {q[i].WrongAns2}, Wrong Answer3: {q[i].WrongAns3}");
                     Console.WriteLine("Press 1 to approve, 2 to reject, 3 to skip, 4 to exit");
                     while (x == '5')
                     {
@@ -242,8 +240,45 @@ namespace Trivia_Stage1.UI
                 Console.ReadKey(true);
             }
             Console.WriteLine($"player mail:{player.PlayerMail} name: {player.Name} password: {player.Password} level: {player.LevelCode} points: {player.Points}");
-            Console.WriteLine("Press any key to continue.");
+            char c = ' ';
+            Console.WriteLine("Press B to change your mail or C/c tou change your name.");
+            c = Console.ReadKey().KeyChar;
+           while (c == 'B' || c == 'b')
+            {
+
+                Console.Write("Please type your  new mail: ");
+                string newMail = Console.ReadLine();
+                while (!IsEmailValid(newMail))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("Bad Email Format! Please try again:");
+                    Console.ResetColor();
+                    newMail = Console.ReadLine();
+                }
+                player.PlayerMail = newMail;
+                Console.WriteLine("If you are intersted in changing your mail again press B/b else press C/c to change your name or any other key to continue.");
+                c = Console.ReadKey().KeyChar;
+
+            }
+
+            while(c =='C' || c=='c')
+            { 
+                Console.Write("Please type your new Name: ");
+                string name = Console.ReadLine();
+                while (!IsNameValid(name))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("Name must be at least 3 characters! Please try again: ");
+                    Console.ResetColor();
+                    name = Console.ReadLine();
+                }
+                player.Name=name;
+                Console.WriteLine("If you are intersted in changing your name again press C/c else press any other key to continue.");
+                c = Console.ReadKey().KeyChar;
+
+            }
             Console.ReadKey(true);
+
         }
 
 

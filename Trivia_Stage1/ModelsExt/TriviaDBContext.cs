@@ -66,8 +66,9 @@ namespace Trivia_Stage1.Models
         {
             return this.Players.Where(p => p == player).FirstOrDefault();
         }
-            
-    
+
+
+
 
 
     }
