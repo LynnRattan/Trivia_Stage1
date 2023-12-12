@@ -226,6 +226,58 @@ namespace Trivia_Stage1.UI
         }
         public void ShowGame()
         {
+            while(true)
+            {
+                ClearScreenAndSetTitle("Game");
+                Question q = db.RandomQusetion();
+                List<string> answers = new List<string>(){q.CorrectAns,q.WrongAns1,q.WrongAns2,q.WrongAns3};
+                answers = answers.OrderBy(x => Random.Shared.Next()).ToList();
+                Console.WriteLine(q.Text);
+                Console.WriteLine($"1) {answers[0]}");
+                Console.WriteLine($"2) {answers[1]}");
+                Console.WriteLine($"3) {answers[2]}");
+                Console.WriteLine($"4) {answers[3]}");
+                Console.WriteLine("Choose the correct answer by pressing its number.");
+                int answer = int.Parse(Console.ReadLine());
+
+                while (answer!=1 && answer!=2 && answer!=3 && answer!=4)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Not an option. Please choose again.");
+                    answer = int.Parse(Console.ReadLine());
+                }
+                if(answers[answer-1] == q.CorrectAns)
+                {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.Write("Correct! +10 points.");
+                    player.Points += 10;
+                    Console.ResetColor();
+                    if(player.Points >100)
+                    {
+                        player.Points = 100;
+                    }
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"Wrong! The correct answer is {q.CorrectAns}");
+                    player.Points -= 5;
+                    if(player.Points < 0)
+                    {
+                        player.Points = 0;
+                    }
+                    Console.ResetColor();
+                }
+                Console.WriteLine("\t To play again press A/a else press any other key.");
+                
+                char c = Console.ReadKey().KeyChar; 
+                if(c != 'A' && c!='a')
+                {
+                    db.GetPlayerByMail(player.PlayerMail).Points = player.Points;
+                    return;
+                }
+
+            }
             Console.WriteLine("Not implemented yet! Press any key to continue...");
             Console.ReadKey(true);
         }

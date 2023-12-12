@@ -67,6 +67,15 @@ namespace Trivia_Stage1.Models
             return this.Players.Where(p => p == player).FirstOrDefault();
         }
 
+        public Question RandomQusetion()
+        {
+            List <Question> q = new List<Question>(); 
+            q=this.Questions.ToList();
+            Random random = new Random();   
+            int place = random.Next(0,q.Count);
+            return q[place];
+        }
+
 
 
 
