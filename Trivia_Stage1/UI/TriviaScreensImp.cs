@@ -16,7 +16,7 @@ namespace Trivia_Stage1.UI
         TriviaDBContext db = new TriviaDBContext();
 
         //Implememnt interface here
-        public bool ShowLogin()
+        public bool ShowLogin() //לין
         {
 
             Console.WriteLine("Enter mail");
@@ -41,7 +41,7 @@ namespace Trivia_Stage1.UI
             
             return false;
         }
-        public bool ShowSignUp()
+        public bool ShowSignUp() //שירה
         {
             //Logout user if anyone is logged in!
             //A reference to the logged in user should be stored as a member variable
@@ -109,6 +109,9 @@ namespace Trivia_Stage1.UI
                 if (player == null)
                 {
                     //Provide a proper message for example:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Failed to signup! Email may already exist in DB!");
+                    Console.ResetColor();
                     Console.WriteLine("Press (B)ack to go back or any other key to signup again...");
 
 
@@ -123,12 +126,21 @@ namespace Trivia_Stage1.UI
 
         }
 
-        public void ShowAddQuestion()
+        public void ShowAddQuestion() //שירי
         {
             
             if (player.Points == 100)
             {
                 ClearScreenAndSetTitle("Add a Question");
+                Console.WriteLine("Choose a subject: 1 - Sports, 2 - Politics, 3 - History, 4 - Science, 5 - Ramon HS");
+                int subject = int.Parse(Console.ReadLine());
+                while (subject < 1 || subject > 5)
+                {
+                    Console.WriteLine("Does not exist.Please try again.");
+                    Console.WriteLine("Choose a subject: 1 - Sports, 2 - Politics, 3 - History, 4 - Science, 5 - Ramon HS");
+                    subject = int.Parse(Console.ReadLine());
+
+                }
                 Console.WriteLine("Add the question's text: ");
                 string text = Console.ReadLine();
                 if (text.ToLower() == "b")
@@ -137,15 +149,7 @@ namespace Trivia_Stage1.UI
                 }
                 Question question = new Question();
                 question.Text = text;
-                Console.WriteLine("Choose a subject: 1 - Sports, 2 - Politics, 3 - History, 4 - Science, 5 - Ramon HS");
-                int subject = int.Parse(Console.ReadLine());
-                while (subject<1 || subject>5)
-                {
-                    Console.WriteLine("Does not exist.Please try again.");
-                    Console.WriteLine("Choose a subject: 1 - Sports, 2 - Politics, 3 - History, 4 - Science, 5 - Ramon HS");
-                    subject = int.Parse(Console.ReadLine());
-
-                }
+               
                 string correctAns;
                 string wrongAns1;
                 string wrongAns2;
@@ -174,17 +178,27 @@ namespace Trivia_Stage1.UI
             }
         }
 
-        public void ShowPendingQuestions()
+        public void ShowPendingQuestions() //שירה
         {
+            List<Question> q = new List<Question>();
+            q = db.PendingQuestion();
+
             if (player.LevelCode == 2 || player.LevelCode == 3)
             {
+                if (q.Count == 0)
+                {
+                    ClearScreenAndSetTitle("Pending Questions");
+                    Console.WriteLine("No pending questions. Press any key to get back.");
+                    Console.ReadKey(true);
+                }
+                
+
                 char x = '5';
-                List<Question> q = new List<Question>();
-                q = db.PendingQuestion();
+               
                 for (int i = 0; i < q.Count; i++)
                 {
                     ClearScreenAndSetTitle("Pending Questions");
-                    Console.WriteLine($" Subject number:{q[i].SubjectCode} Question:{q[i].Text}, Correct Answer:{q[i].CorrectAns}, Wrong Answer 1:{q[i].WrongAns1},   Wrong Answer 2: {q[i].WrongAns2}, Wrong Answer3: {q[i].WrongAns3}");
+                    Console.WriteLine($"Subject number:{q[i].SubjectCode} \nQuestion:{q[i].Text} \nCorrect Answer:{q[i].CorrectAns} \nWrong Answer 1:{q[i].WrongAns1} \nWrong Answer 2: {q[i].WrongAns2} \nWrong Answer3: {q[i].WrongAns3}");
                     Console.WriteLine("Press 1 to approve, 2 to reject, 3 to skip, 4 to exit");
                     while (x == '5')
                     {
@@ -224,7 +238,7 @@ namespace Trivia_Stage1.UI
                 Console.ReadKey(true);
             }
         }
-        public void ShowGame()
+        public void ShowGame()//שירי
         {
             while(true)
             {
@@ -238,12 +252,21 @@ namespace Trivia_Stage1.UI
                 Console.WriteLine($"3) {answers[2]}");
                 Console.WriteLine($"4) {answers[3]}");
                 Console.WriteLine("Choose the correct answer by pressing its number.");
-                int answer = int.Parse(Console.ReadLine());
+                int answer = 0;
+                try
+                {
+                    answer = int.Parse(Console.ReadLine());
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
 
                 while (answer!=1 && answer!=2 && answer!=3 && answer!=4)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Not an option. Please choose again.");
+                    Console.ResetColor();
                     answer = int.Parse(Console.ReadLine());
                 }
                 if(answers[answer-1] == q.CorrectAns)
@@ -268,7 +291,7 @@ namespace Trivia_Stage1.UI
                     }
                     Console.ResetColor();
                 }
-                Console.WriteLine("\t To play again press A/a else press any other key.");
+                Console.WriteLine("\n To play again press A/a else press any other key.");
                 
                 char c = Console.ReadKey().KeyChar; 
                 if(c != 'A' && c!='a')
@@ -278,10 +301,10 @@ namespace Trivia_Stage1.UI
                 }
 
             }
-            Console.WriteLine("Not implemented yet! Press any key to continue...");
-            Console.ReadKey(true);
+            
+            
         }
-        public void ShowProfile()
+        public void ShowProfile()//לין
         {
             
             Player player;
@@ -291,9 +314,9 @@ namespace Trivia_Stage1.UI
                 Console.WriteLine("Not loged in. Press any key to get back...");
                 Console.ReadKey(true);
             }
-            Console.WriteLine($"player mail: {player.PlayerMail}  name: {player.Name}  password: {player.Password}  level: {player.LevelCode}  points: {player.Points}");
+            Console.WriteLine($"player mail: {player.PlayerMail} \nname: {player.Name}  \npassword: {player.Password}  \nlevel: {player.LevelCode}  \npoints: {player.Points}");
             char c = ' ';
-            Console.WriteLine("Press B to change your mail, C/c tou change your name, A/a to change you password, or enter to continue");
+            Console.WriteLine("Press B to change your mail, C/c to change your name, A/a to change you password, or any other key to continue");
             c = Console.ReadKey().KeyChar;
            while (c == 'B' || c == 'b')
             {
@@ -311,7 +334,7 @@ namespace Trivia_Stage1.UI
                 { Console.WriteLine("Already your mail."); }
                 player.PlayerMail = newMail;
                 db.SaveChanges();
-                Console.WriteLine("Press B to change your mail again, C/c tou change your name, A/a to change you password, or enter continue");
+                Console.WriteLine("Press B to change your mail, C/c to change your name, A/a to change you password, or any other key to continue");
                 c = Console.ReadKey().KeyChar;
 
             }
@@ -330,14 +353,14 @@ namespace Trivia_Stage1.UI
                 if (newName == player.Name) { Console.WriteLine("Already your name."); }
                 player.Name=newName;
                 db.SaveChanges();
-                Console.WriteLine("Press B to change your mail, C/c tou change your name again, A/a to change you password, or enter to continue.");
+                Console.WriteLine("Press B to change your mail, C/c to change your name, A/a to change you password, or any other key to continue");
                 c = Console.ReadKey().KeyChar;
 
             }
 
             while(c=='A' || c=='a')
             {
-                Console.Write(" Please type your password: ");
+                Console.Write(" Please type your new password: ");
                 string newPassword = Console.ReadLine();
                 while (!IsPasswordValid(newPassword))
                 {
@@ -349,7 +372,7 @@ namespace Trivia_Stage1.UI
                 if (newPassword == player.Password) { Console.WriteLine("Already your password."); }
                 player.Password=newPassword;
                 db.SaveChanges();
-                Console.WriteLine("Press B to change your mail, C/c tou change your name, A/a to change you password again, or enter to continue.");
+                Console.WriteLine("Press B to change your mail, C/c to change your name, A/a to change you password, or any other key to continue");
                 c = Console.ReadKey().KeyChar;
             }
             Console.ReadKey(true);
