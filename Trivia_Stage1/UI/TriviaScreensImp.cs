@@ -12,23 +12,23 @@ namespace Trivia_Stage1.UI
 
         //Place here any state you would like to keep during the app life time
         //For example, player login details...
-        Player player;
-        TriviaDBContext db = new TriviaDBContext();
+        Player player; //עצם מטיפוס player השחקן המחובר
+        TriviaDBContext db = new TriviaDBContext(); 
 
         //Implememnt interface here
         public bool ShowLogin() //לין
         {
 
-            Console.WriteLine("Enter mail");
-            string mail = Console.ReadLine();
+            Console.WriteLine("Enter mail"); 
+            string mail = Console.ReadLine();   //קליטת מייל
             Console.WriteLine("Enter password");
-            string password = Console.ReadLine();
+            string password = Console.ReadLine();  //קליטת סיסמה
 
 
            
-                player = db.Login(mail, password);
+                player = db.Login(mail, password);   //השמת משתמש בעצם של המשתמש player שהפרטים שלו הם המייל והסיסמה שהוכנסו
                 //אם לא תקין
-                while (player == null)
+                while (player == null)                                     //אם לא נמצא השחקן בעל המייל והסיסמה יש לנסות שוב
                 {
                     Console.WriteLine("Cannot be found. Enter again.");
                     Console.WriteLine("Enter mail");
@@ -39,88 +39,88 @@ namespace Trivia_Stage1.UI
                 }
                 return true;
             
-            return false;
+            
         }
         public bool ShowSignUp() //שירה
         {
             //Logout user if anyone is logged in!
             //A reference to the logged in user should be stored as a member variable
             //in this class! Example:
-            player=null;
+            player=null;    //אין שחקן מחובר
 
            
 
             //Loop through inputs until a user/player is created or 
             //user choose to go back to menu
 
-            char c = ' ';
+            char c = ' ';       
             while (c != 'B' && c != 'b' && player == null)
             {
                 //Clear screen
                 ClearScreenAndSetTitle("Signup");
 
                 Console.Write("Please type your email: ");
-                string email = Console.ReadLine();
-                while (!IsEmailValid(email))
+                string email = Console.ReadLine();           //קליטת מייל
+                while (!IsEmailValid(email))                 //כל עוד המייל לא תקין יש לנסות שוב
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("Bad Email Format! Please try again:");
+                    Console.Write("Bad Email Format! Please try again:");    
                     Console.ResetColor();
-                    email = Console.ReadLine();
+                    email = Console.ReadLine();                  //קליטת מייל חדש
                 }
 
                 Console.Write("Please type your password: ");
-                string password = Console.ReadLine();
-                while (!IsPasswordValid(password))
+                string password = Console.ReadLine();           //קליטת סיסמה
+                while (!IsPasswordValid(password))              //כל עוד הסיסמה לא תקינה יש לנסות שוב
                 {
                     Console.ForegroundColor= ConsoleColor.Red;  
                     Console.Write("Password must be at least 4 characters! Please try again: ");
                     Console.ResetColor();   
-                    password = Console.ReadLine();
+                    password = Console.ReadLine();                //קליטת סיסמה חדשה
                 }
 
                 Console.Write("Please type your Name: ");
-                string name = Console.ReadLine();
-                while (!IsNameValid(name))
+                string name = Console.ReadLine();              //קליטת שם
+                while (!IsNameValid(name))                       //כל עוד השם לא תקין יש לנסות שוב
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("Name must be at least 3 characters! Please try again: ");
                     Console.ResetColor();
-                    name = Console.ReadLine();
+                    name = Console.ReadLine();                 //קליטת שם חדש
                 }
                
-                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                Console.ForegroundColor = ConsoleColor.DarkBlue;    
                 Console.WriteLine("Connecting to Server...");
                 Console.ResetColor();
                 //Create instance of Business Logic and call the signup method
                 // *For example:
                 try
                 {
-                  player = db.SignUp(email, password, name);
+                  player = db.SignUp(email, password, name);     //יצירת משתמש חדש עם הפרטים שהוזנו ושמירה שלו בdatabase
                 }
-                catch (Exception ex)
+                catch (Exception ex)   //אם הפעולה של ההרשמה SignUp נכשלה
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Failed to signup! Email may already exist in DB!");
+                    Console.WriteLine("Failed to signup! Email may already exist in DB!"); //הודעת שגיאה
                     Console.ResetColor();
                 }
 
 
-                if (player == null)
+                if (player == null)    //אם הפעולה של ההרשמה SignUp נכשלה
                 {
                     //Provide a proper message for example:
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Failed to signup! Email may already exist in DB!");
+                    Console.WriteLine("Failed to signup! Email may already exist in DB!");    //הודעת שגיאה
                     Console.ResetColor();
                     Console.WriteLine("Press (B)ack to go back or any other key to signup again...");
 
 
                     //Get another input from user
-                    c = Console.ReadKey(true).KeyChar;
+                    c = Console.ReadKey(true).KeyChar;  //קליטה של מקש מהמשתנה, אם לא לחץ על B יש הרשמה מחדש
                 }
             }
             //return true if signup suceeded!
-            Console.WriteLine("Sign Up suceeded!");
+            Console.WriteLine("Sign Up suceeded!");   //הודעה שההרשמה הצליחה
             return true;
 
 
@@ -129,49 +129,49 @@ namespace Trivia_Stage1.UI
         public void ShowAddQuestion() //שירי
         {
             
-            if (player.Points == 100)
+            if (player.Points == 100)  //אם לשחקן יש 100 נקודות הוא יכול להוסיף שאלה
             {
                 ClearScreenAndSetTitle("Add a Question");
                 Console.WriteLine("Choose a subject: 1 - Sports, 2 - Politics, 3 - History, 4 - Science, 5 - Ramon HS");
-                int subject = int.Parse(Console.ReadLine());
-                while (subject < 1 || subject > 5)
+                int subject = int.Parse(Console.ReadLine());     //קליטת נושא שאלה
+                while (subject < 1 || subject > 5)  //כל עוד מספר הנושא לא תקין ולא קיים בטבלת נושאים יש לנסות שוב
                 {
                     Console.WriteLine("Does not exist.Please try again.");
                     Console.WriteLine("Choose a subject: 1 - Sports, 2 - Politics, 3 - History, 4 - Science, 5 - Ramon HS");
-                    subject = int.Parse(Console.ReadLine());
+                    subject = int.Parse(Console.ReadLine());  //קליטת נושא מחדש
 
                 }
                 Console.WriteLine("Add the question's text: ");
-                string text = Console.ReadLine();
-                if (text.ToLower() == "b")
+                string text = Console.ReadLine();   //קליטת השאלה
+                if (text.ToLower() == "b")  //אם השחקן לוחץ על b או B כלומר הוא רוצה לצאת ולא להוסיף שאלה אז הפעולה תיפסק והוא יצא מהמסך
                 {
                     return;
                 }
-                Question question = new Question();
-                question.Text = text;
+                Question question = new Question(); //יצירת עצם מטיפוס Question
+                question.Text = text;  //השאלה שנקלטה מהשחקן היא תכונת הטקסט בטיפוס מסוג שאלה שנוצר
                
-                string correctAns;
-                string wrongAns1;
-                string wrongAns2;
-                string wrongAns3;
+                string correctAns;   //יצירת משתנה תשובה נכונה לשאלה
+                string wrongAns1;     //יצירת משתנה תשובה שגויה לשאלה מספר 1   
+                string wrongAns2;      //יצירת משתנה תשובה שגויה לשאלה מספר 2
+                string wrongAns3;       //יצירת משתנה תשובה שגויה לשאלה מספר 3
                 Console.WriteLine("Add the right answer");
-                correctAns = Console.ReadLine();
+                correctAns = Console.ReadLine();    //קליטת תשובה נכונה
                 Console.WriteLine("add the first wrong answer");
-                wrongAns1 = Console.ReadLine();
+                wrongAns1 = Console.ReadLine();     //קליטת תשובה שגויה לשאלה מספר 1
                 Console.WriteLine("add the second wrong answer");
-                wrongAns2 = Console.ReadLine();
+                wrongAns2 = Console.ReadLine();    // קליטת תשובה שגויה לשאלה מספר 2
                 Console.WriteLine("add the third wrong answer");
-                wrongAns3 = Console.ReadLine();
-                
+                wrongAns3 = Console.ReadLine();     // קליטת תשובה שגויה לשאלה מספר 3
 
-                db.AddQuestion(player.PlayerId,subject,text,correctAns,wrongAns1,wrongAns2,wrongAns3);
+
+                db.AddQuestion(player.PlayerId,subject,text,correctAns,wrongAns1,wrongAns2,wrongAns3);  //יצירת שאלה חדשה עם הפרטים שהוזנו שהסטטוס שלה הוא 3, בהמתנה
                
-                player.Points = 0;
+                player.Points = 0;  //איפוס הנקודות של השחקן
             }
-            else
+            else  //אם לשחקן יש פחות מ100 נקודות הוא לא יכול להוסיף שאלה
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("You do not have permission to view this page");
+                Console.WriteLine("You do not have permission to view this page");  //הודעה שאין גישה למסך זה
                 Console.ResetColor();
                 Console.WriteLine("Press any key to continue");
                 Console.ReadKey(true);
@@ -180,12 +180,12 @@ namespace Trivia_Stage1.UI
 
         public void ShowPendingQuestions() //שירה
         {
-            List<Question> q = new List<Question>();
-            q = db.PendingQuestion();
+            List<Question> q = new List<Question>();  //יצירת רשימה של אובייקטים מטיפוס שאלה
+            q = db.PendingQuestion();     //מילוי התאים ברשימה בשאלות מטבלת השאלות שהסטטוס שלהן הוא 3, בהמתנה
 
-            if (player.LevelCode == 2 || player.LevelCode == 3)
+            if (player.LevelCode == 2 || player.LevelCode == 3)  //אם השחקן הוא מנהל או מאסטר יש לו גישה למסך
             {
-                if (q.Count == 0)
+                if (q.Count == 0) //אם אין שאלות בהמתנה
                 {
                     ClearScreenAndSetTitle("Pending Questions");
                     Console.WriteLine("No pending questions. Press any key to get back.");
@@ -193,31 +193,31 @@ namespace Trivia_Stage1.UI
                 }
                 
 
-                char x = '5';
+                char x = '5'; 
                
-                for (int i = 0; i < q.Count; i++)
+                for (int i = 0; i < q.Count; i++) //ריצה על רשימת השאלות בהמתנה
                 {
                     ClearScreenAndSetTitle("Pending Questions");
-                    Console.WriteLine($"Subject number:{q[i].SubjectCode} \nQuestion:{q[i].Text} \nCorrect Answer:{q[i].CorrectAns} \nWrong Answer 1:{q[i].WrongAns1} \nWrong Answer 2: {q[i].WrongAns2} \nWrong Answer3: {q[i].WrongAns3}");
+                    Console.WriteLine($"Subject number:{q[i].SubjectCode} \nQuestion:{q[i].Text} \nCorrect Answer:{q[i].CorrectAns} \nWrong Answer 1:{q[i].WrongAns1} \nWrong Answer 2: {q[i].WrongAns2} \nWrong Answer3: {q[i].WrongAns3}"); //הדפסת פרטי השאלה
                     Console.WriteLine("Press 1 to approve, 2 to reject, 3 to skip, 4 to exit");
                     while (x == '5')
                     {
-                        x = Console.ReadKey().KeyChar;
-                        if (x == '1')
+                        x = Console.ReadKey().KeyChar; //קליטת הדבר שהמנהל רוצה לעשות
+                        if (x == '1')                   
                         {
-                            q[i].StatusCode = 1;
+                            q[i].StatusCode = 1;  //אישור השאלה
                         }
                         else if (x == '2')
                         {
-                            q[i].StatusCode = 2;
+                            q[i].StatusCode = 2;  //דחיית/פסילת השאלה
                         }
                         else if (x == '3')
                         {
-                            q[i].StatusCode = 3;
+                            q[i].StatusCode = 3;  //מעבר לשאלה הבאה, לא משנה את סטטוס השאלה הקודמת
                         }
                         else if (x == '4')
                         {
-                            db.SaveChanges();
+                            db.SaveChanges();      //יציאה מהמסך מבלי לשנות משהו נוסף
                             return;
                         }
                         else
@@ -226,10 +226,10 @@ namespace Trivia_Stage1.UI
                         }
                     }
                 }
-                db.SaveChanges();
+                db.SaveChanges();  //שמירת השינויים שנעשו במסך בdatabse
                 
             }
-            else
+            else //אם השחקן שמנסה להיכנס למסך הוא לא מנהל או מאסטר
             {
                 Console.ForegroundColor= ConsoleColor.Red;
                 Console.WriteLine("You do not have permission to view this page");
@@ -240,14 +240,14 @@ namespace Trivia_Stage1.UI
         }
         public void ShowGame()//שירי
         {
-            while(true)
+            while(true) //יכנס תמיד ללולאה כל עוד השחקן רוצה להמשיך לשחק
             {
                 ClearScreenAndSetTitle("Game");
-                Question q = db.RandomQusetion();
-                List<string> answers = new List<string>(){q.CorrectAns,q.WrongAns1,q.WrongAns2,q.WrongAns3};
-                answers = answers.OrderBy(x => Random.Shared.Next()).ToList();
-                Console.WriteLine(q.Text);
-                Console.WriteLine($"1) {answers[0]}");
+                Question q = db.RandomQusetion(); //יצירת אובייקט מטיפוס שאלה והכנסה אליו שאלה רנדומלית מרשימת השאלות שאושרו
+                List<string> answers = new List<string>(){q.CorrectAns,q.WrongAns1,q.WrongAns2,q.WrongAns3}; //יצירת רשימה של האופציות לתשובות של השאלה
+                answers = answers.OrderBy(x => Random.Shared.Next()).ToList(); //שינוי הסדר של התשובות ברשימה
+                Console.WriteLine(q.Text); //הדפסת השאלה
+                Console.WriteLine($"1) {answers[0]}");  //הדפסה של האופציות לתשובה
                 Console.WriteLine($"2) {answers[1]}");
                 Console.WriteLine($"3) {answers[2]}");
                 Console.WriteLine($"4) {answers[3]}");
@@ -255,37 +255,37 @@ namespace Trivia_Stage1.UI
                 int answer = 0;
                 try
                 {
-                    answer = int.Parse(Console.ReadLine());
+                    answer = int.Parse(Console.ReadLine()); //קליטת הבחירה של התשובה מהשחקן
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
 
-                while (answer!=1 && answer!=2 && answer!=3 && answer!=4)
+                while (answer!=1 && answer!=2 && answer!=3 && answer!=4)  //אם ההזנה של התשובה לא תקינה, הודעת שגיאה
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Not an option. Please choose again.");
                     Console.ResetColor();
-                    answer = int.Parse(Console.ReadLine());
+                    answer = int.Parse(Console.ReadLine());  //קליטה מחדש של התשובה של השחקן
                 }
-                if(answers[answer-1] == q.CorrectAns)
+                if(answers[answer-1] == q.CorrectAns)  //אם השחקן בחר בתשובה הנכונה
                 {
                     Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.Write("Correct! +10 points.");
-                    player.Points += 10;
+                    player.Points += 10;  //הוספת 10 נקודות לשחקן
                     Console.ResetColor();
-                    if(player.Points >100)
+                    if(player.Points >100) //אם הנקודות של השחקן לאחר התוספת קטנה מ100 אז היא תהיה שווה ל100
                     {
                         player.Points = 100;
                     }
                 }
-                else
+                else //אם השחקן טעה
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"Wrong! The correct answer is {q.CorrectAns}");
-                    player.Points -= 5;
-                    if(player.Points < 0)
+                    player.Points -= 5; //הורדת 5 נקודות מהנקודות של השחקן
+                    if(player.Points < 0) //אם לאחר ההורדה מספר הנקודות של השחקן שלילי אז מספר הנקודות שלו יהיה שווה ל0
                     {
                         player.Points = 0;
                     }
@@ -293,8 +293,8 @@ namespace Trivia_Stage1.UI
                 }
                 Console.WriteLine("\n To play again press A/a else press any other key.");
                 
-                char c = Console.ReadKey().KeyChar; 
-                if(c != 'A' && c!='a')
+                char c = Console.ReadKey().KeyChar; //קליטת מקש מהשחקן
+                if(c != 'A' && c!='a') //אם השחקן לא לחץ על a או A  כלומר הוא לא רוצה להמשיך לשחק, שמירת השינויים ויציאה ממסך המשחק
                 {
                     db.GetPlayerByMail(player.PlayerMail).Points = player.Points;
                     return;
@@ -307,73 +307,73 @@ namespace Trivia_Stage1.UI
         public void ShowProfile()//לין
         {
             
-            Player player;
-            player = db.Profile(this.player);
-            if (player==null)
+            
+            player = db.Profile(this.player);   //השמה באובייקט השחקן (שנוצר בהתחלה) את השחקן שמחובר 
+            if (player==null) //אם אין משתמש מחובר הודעה בהתאם
             {
                 Console.WriteLine("Not loged in. Press any key to get back...");
                 Console.ReadKey(true);
             }
-            Console.WriteLine($"player mail: {player.PlayerMail} \nname: {player.Name}  \npassword: {player.Password}  \nlevel: {player.LevelCode}  \npoints: {player.Points}");
+            Console.WriteLine($"player mail: {player.PlayerMail} \nname: {player.Name}  \npassword: {player.Password}  \nlevel: {player.LevelCode}  \npoints: {player.Points}"); //הדפסת פרטי השחקן המחובר
             char c = ' ';
             Console.WriteLine("Press B to change your mail, C/c to change your name, A/a to change you password, or any other key to continue");
-            c = Console.ReadKey().KeyChar;
-           while (c == 'B' || c == 'b')
+            c = Console.ReadKey().KeyChar; //קליטה של מקש מהשחקן
+           while (c == 'B' || c == 'b') //אם השחקן רוצה לשנות את המייל שלו
             {
 
                 Console.Write(" Please type your  new mail: ");
-                string newMail = Console.ReadLine();
-                while (!IsEmailValid(newMail))
+                string newMail = Console.ReadLine(); //קליטת מייל חדש מהשחקן
+                while (!IsEmailValid(newMail)) //כל עוד המייל החדש לא תקין, הדפסת הודעה בהתאם
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("Bad Email Format! Please try again:");
                     Console.ResetColor();
-                    newMail = Console.ReadLine();
+                    newMail = Console.ReadLine(); //קליטת מייל חדש מהשחקן פעם נוספת
                 }
-                if(newMail==player.PlayerMail)
+                if(newMail==player.PlayerMail) //אם המייל החדש של השחקן זהה למייל שכבר יש לו, הדפסת הודעה בהתאם
                 { Console.WriteLine("Already your mail."); }
-                player.PlayerMail = newMail;
-                db.SaveChanges();
+                player.PlayerMail = newMail; //החלפת מייל השחקן למייל החדש שהכניס
+                db.SaveChanges();  //שמירת שינויים בdatabase
                 Console.WriteLine("Press B to change your mail, C/c to change your name, A/a to change you password, or any other key to continue");
-                c = Console.ReadKey().KeyChar;
+                c = Console.ReadKey().KeyChar; //קליטת מקש מהשחקן
 
             }
 
-            while(c =='C' || c=='c')
+            while(c =='C' || c=='c')  //אם השחקן רוצה לשנות את השם שלו
             { 
                 Console.Write(" Please type your new Name: ");
-                string newName = Console.ReadLine();
-                while (!IsNameValid(newName))
+                string newName = Console.ReadLine(); //קליטת שם חדש מהשחקן
+                while (!IsNameValid(newName)) //כל עוד השם החדש לא תקין, הודעת שגיאה
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("Name must be at least 3 characters! Please try again: ");
                     Console.ResetColor();
-                    newName = Console.ReadLine();
+                    newName = Console.ReadLine();  //קליטת שם חדש מהשחקן פעם נוספת
                 }
-                if (newName == player.Name) { Console.WriteLine("Already your name."); }
-                player.Name=newName;
-                db.SaveChanges();
+                if (newName == player.Name) { Console.WriteLine("Already your name."); } //אם השם החדש שהכניס השחקן זהה לשם שכבר יש לו, הודעה בהתאם
+                player.Name=newName; //החלפת שם השחקן בשם החדש שהכניס
+                db.SaveChanges(); //שמירת השינויים בdatabase
                 Console.WriteLine("Press B to change your mail, C/c to change your name, A/a to change you password, or any other key to continue");
-                c = Console.ReadKey().KeyChar;
+                c = Console.ReadKey().KeyChar; //קליטת מקש מהשחקן
 
             }
 
-            while(c=='A' || c=='a')
+            while(c=='A' || c=='a') //אם השחקן רוצה לשנות את הסיסמה שלו
             {
                 Console.Write(" Please type your new password: ");
-                string newPassword = Console.ReadLine();
-                while (!IsPasswordValid(newPassword))
+                string newPassword = Console.ReadLine();  //קליטת סיסמה חדשה מהשחקן
+                while (!IsPasswordValid(newPassword)) //כל עוד הסיסמה החדשה לא תקינה, הודעת שגיאה
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("Password must be at least 4 characters! Please try again: ");
                     Console.ResetColor();
-                    newPassword = Console.ReadLine();
+                    newPassword = Console.ReadLine(); //קליטת סיסמה חדשה מהשחקן פעם נוספת
                 }
-                if (newPassword == player.Password) { Console.WriteLine("Already your password."); }
-                player.Password=newPassword;
-                db.SaveChanges();
+                if (newPassword == player.Password) { Console.WriteLine("Already your password."); } //אם הסיסמה החדשה שהכניס השחקן זהה לזאת שכבר יש לו, הודעה בהתאם
+                player.Password=newPassword; //החלפת הסיסמה של השחקן בסיסמה החדשה שהכניס
+                db.SaveChanges(); //שמירת השינויים בdatabase
                 Console.WriteLine("Press B to change your mail, C/c to change your name, A/a to change you password, or any other key to continue");
-                c = Console.ReadKey().KeyChar;
+                c = Console.ReadKey().KeyChar; //קליטת מקש מהמשתנה
             }
             Console.ReadKey(true);
 
