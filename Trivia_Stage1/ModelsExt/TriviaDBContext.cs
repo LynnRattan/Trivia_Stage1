@@ -14,10 +14,10 @@ namespace Trivia_Stage1.Models
             return this.Players.ToList();
         }
 
-        public Player Login(string mail, string password) // פעולה המקבלת מייל וסיסמה ובודקת אם קיים שחקן בטבלת שחקנים בעל המייל והסיסמה האלה ומחזירה את השחקן אם כן
+        public Player Login(string name,string mail, string password) // פעולה המקבלת מייל וסיסמה ובודקת אם קיים שחקן בטבלת שחקנים בעל המייל והסיסמה האלה ומחזירה את השחקן אם כן
         {
 
-            return this.Players.Where(p => p.PlayerMail == mail && p.Password == password).FirstOrDefault();
+            return this.Players.Where(p => p.Name==name && p.PlayerMail == mail && p.Password == password).FirstOrDefault();
         }
         public Player GetPlayerByMail(string mail)//פעולה המקבלת מייל ובודקת אם קיים שחקן בטבלת שחקנים בעל המייל הזה ומחזירה את השחקן אם כן
         {

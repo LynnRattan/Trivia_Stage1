@@ -18,24 +18,29 @@ namespace Trivia_Stage1.UI
         //Implememnt interface here
         public bool ShowLogin() //לין
         {
+            Console.WriteLine("Enter name");
+            string name = Console.ReadLine(); //קליטת שם
 
             Console.WriteLine("Enter mail"); 
             string mail = Console.ReadLine();   //קליטת מייל
+            
             Console.WriteLine("Enter password");
             string password = Console.ReadLine();  //קליטת סיסמה
 
 
            
-                player = db.Login(mail, password);   //השמת משתמש בעצם של המשתמש player שהפרטים שלו הם המייל והסיסמה שהוכנסו
+                player = db.Login(name,mail, password);   //השמת משתמש בעצם של המשתמש player שהפרטים שלו הם המייל והסיסמה שהוכנסו
                 //אם לא תקין
                 while (player == null)                                     //אם לא נמצא השחקן בעל המייל והסיסמה יש לנסות שוב
                 {
                     Console.WriteLine("Cannot be found. Enter again.");
-                    Console.WriteLine("Enter mail");
-                    mail = Console.ReadLine();
+                Console.WriteLine("Enter name");
+                name = Console.ReadLine(); //קליטת שם מחדש
+                Console.WriteLine("Enter mail");
+                    mail = Console.ReadLine(); //קליטת מייל מחדש
                     Console.WriteLine("Enter password");
-                    password = Console.ReadLine();
-                    player = db.Login(mail, password);
+                    password = Console.ReadLine(); //קליטת סיסמה מחדש
+                    player = db.Login(name,mail, password);
                 }
                 return true;
             
