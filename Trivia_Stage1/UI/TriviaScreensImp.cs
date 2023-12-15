@@ -64,14 +64,24 @@ namespace Trivia_Stage1.UI
                 //Clear screen
                 ClearScreenAndSetTitle("Signup");
 
-                Console.Write("Please type your email: ");
-                string email = Console.ReadLine();           //קליטת מייל
-                while (!IsEmailValid(email))                 //כל עוד המייל לא תקין יש לנסות שוב
+                Console.Write("Please type your Name: ");
+                string name = Console.ReadLine();              //קליטת שם
+                while (!IsNameValid(name))                       //כל עוד השם לא תקין יש לנסות שוב
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("Name must be at least 3 characters! Please try again: ");
+                    Console.ResetColor();
+                    name = Console.ReadLine();                 //קליטת שם חדש
+                }
+
+                Console.Write("Please type your mail: ");
+                string mail = Console.ReadLine();           //קליטת מייל
+                while (!IsEmailValid(mail))                 //כל עוד המייל לא תקין יש לנסות שוב
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("Bad Email Format! Please try again:");    
                     Console.ResetColor();
-                    email = Console.ReadLine();                  //קליטת מייל חדש
+                    mail = Console.ReadLine();                  //קליטת מייל חדש
                 }
 
                 Console.Write("Please type your password: ");
@@ -84,15 +94,7 @@ namespace Trivia_Stage1.UI
                     password = Console.ReadLine();                //קליטת סיסמה חדשה
                 }
 
-                Console.Write("Please type your Name: ");
-                string name = Console.ReadLine();              //קליטת שם
-                while (!IsNameValid(name))                       //כל עוד השם לא תקין יש לנסות שוב
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("Name must be at least 3 characters! Please try again: ");
-                    Console.ResetColor();
-                    name = Console.ReadLine();                 //קליטת שם חדש
-                }
+                
                
                 Console.ForegroundColor = ConsoleColor.DarkBlue;    
                 Console.WriteLine("Connecting to Server...");
@@ -101,7 +103,7 @@ namespace Trivia_Stage1.UI
                 // *For example:
                 try
                 {
-                  player = db.SignUp(email, password, name);     //יצירת משתמש חדש עם הפרטים שהוזנו ושמירה שלו בdatabase
+                  player = db.SignUp(mail, password, name);     //יצירת משתמש חדש עם הפרטים שהוזנו ושמירה שלו בdatabase
                 }
                 catch (Exception ex)   //אם הפעולה של ההרשמה SignUp נכשלה
                 {
@@ -134,7 +136,7 @@ namespace Trivia_Stage1.UI
         public void ShowAddQuestion() //שירי
         {
             
-            if (player.Points == 100)  //אם לשחקן יש 100 נקודות הוא יכול להוסיף שאלה
+            if (player.Points == 100 || player.LevelCode==3)  //אם לשחקן יש 100 נקודות הוא יכול להוסיף שאלה
             {
                 ClearScreenAndSetTitle("Add a Question");
                 Console.WriteLine("Choose a subject: 1 - Sports, 2 - Politics, 3 - History, 4 - Science, 5 - Ramon HS");
