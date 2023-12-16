@@ -14,7 +14,7 @@ namespace Trivia_Stage1.Models
             return this.Players.ToList();
         }
 
-        public Player GetPlayerById(int id)
+        public Player GetPlayerById(int id) //פעולה המקבלת ת.ז. ומחזירה שחקן בעל הת.ז. הזה אם קיים אחד בטבלת שחקנים
         {
             return this.Players.Where(p => p.PlayerId == id).FirstOrDefault();
         }
