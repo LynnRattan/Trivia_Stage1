@@ -192,7 +192,7 @@ namespace Trivia_Stage1.UI
                 wrongAns3 = Console.ReadLine();     // קליטת תשובה שגויה לשאלה מספר 3
 
 
-                db.AddQuestion(player.PlayerId,subject,text,correctAns,wrongAns1,wrongAns2,wrongAns3);  //יצירת שאלה חדשה עם הפרטים שהוזנו שהסטטוס שלה הוא 3, בהמתנה
+                db.AddQuestion(player.PlayerId,subject,text,correctAns,wrongAns1,wrongAns2,wrongAns3);  //קריאה לפעולה שיוצרת שאלה חדשה עם הפרטים שהוזנו שהסטטוס שלה הוא 3, בהמתנה
                
                 player.Points = 0;  //איפוס הנקודות של השחקן
             }
@@ -202,7 +202,7 @@ namespace Trivia_Stage1.UI
                 Console.WriteLine("You do not have permission to view this page");  //הודעה שאין גישה למסך זה
                 Console.ResetColor();
                 Console.WriteLine("Press any key to continue");
-                Console.ReadKey(true); //יציאה מהמסך למסך תפריט
+                Console.ReadKey(true); //יציאה מהמסך למסך תפריט אחרי קליטת תו מהשחקן
             }
         }
 
@@ -325,9 +325,9 @@ namespace Trivia_Stage1.UI
                 char c = Console.ReadKey().KeyChar; //קליטת מקש מהשחקן
                 if(c != 'A' && c!='a') //אם השחקן לא לחץ על a או A  כלומר הוא לא רוצה להמשיך לשחק, שמירת השינויים ויציאה ממסך המשחק
                 {
-                    db.GetPlayerById(player.PlayerId).Points = player.Points;
-                    db.SaveChanges();
-                    return;
+                    db.GetPlayerById(player.PlayerId).Points = player.Points; //שינוי כמות הנקודות של השחקן לאחר המשחק
+                    db.SaveChanges(); //שמירת השינויים בdatabase
+                    return; //עצירת פעולה כלומר חזרה למסך תפריט של שחקן מחובר
                 }
 
             }
@@ -343,7 +343,7 @@ namespace Trivia_Stage1.UI
             {
                 Console.WriteLine("Not loged in. Press any key to get back...");
                 Console.ReadKey(true);
-                return;
+                return; //הפסקת הפעולה, כלומר יציאה מהמסך לאחר קליטת כל תו מהמשתמש
             }
            
                 Console.WriteLine($"player mail: {player.PlayerMail} \nname: {player.Name}  \npassword: {player.Password}  \nlevel: {player.LevelCode}  \npoints: {player.Points}"); //הדפסת פרטי השחקן המחובר
@@ -351,16 +351,16 @@ namespace Trivia_Stage1.UI
            
             char c = ' ';
             Console.WriteLine("Press B/b to change your mail, C/c to change your name, A/a to change you password, or any other key to get back.");
-            c = Console.ReadKey().KeyChar; //קליטה של מקש מהשחקן
+            c = Console.ReadKey().KeyChar; //קליטה של תו מהשחקן
            while (c == 'B' || c == 'b') //אם השחקן רוצה לשנות את המייל שלו
             {
 
                 Console.Write(" Please type your  new mail: ");
                 string newMail = Console.ReadLine(); //קליטת מייל חדש מהשחקן
-                while (!IsEmailValid(newMail)) //כל עוד המייל החדש לא תקין, הדפסת הודעה בהתאם
+                while (!IsEmailValid(newMail)) //כל עוד המייל החדש לא תקין
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("Bad Email Format! Please try again:");
+                    Console.Write("Bad Email Format! Please try again:"); 
                     Console.ResetColor();
                     newMail = Console.ReadLine(); //קליטת מייל חדש מהשחקן פעם נוספת
                 }
@@ -369,7 +369,7 @@ namespace Trivia_Stage1.UI
                 player.PlayerMail = newMail; //החלפת מייל השחקן למייל החדש שהכניס
                 db.SaveChanges();  //שמירת שינויים בdatabase
                 Console.WriteLine("Press B/b to change your mail, C/c to change your name, A/a to change you password, or any other key to get back.");
-                c = Console.ReadKey().KeyChar; //קליטת מקש מהשחקן
+                c = Console.ReadKey().KeyChar; //קליטת תו מהשחקן
 
             }
 
@@ -377,7 +377,7 @@ namespace Trivia_Stage1.UI
             { 
                 Console.Write(" Please type your new Name: ");
                 string newName = Console.ReadLine(); //קליטת שם חדש מהשחקן
-                while (!IsNameValid(newName)) //כל עוד השם החדש לא תקין, הודעת שגיאה
+                while (!IsNameValid(newName)) //כל עוד השם החדש לא תקין
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("Name must be at least 3 characters! Please try again: ");
@@ -396,7 +396,7 @@ namespace Trivia_Stage1.UI
             {
                 Console.Write(" Please type your new password: ");
                 string newPassword = Console.ReadLine();  //קליטת סיסמה חדשה מהשחקן
-                while (!IsPasswordValid(newPassword)) //כל עוד הסיסמה החדשה לא תקינה, הודעת שגיאה
+                while (!IsPasswordValid(newPassword)) //כל עוד הסיסמה החדשה לא תקינה
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("Password must be at least 4 characters! Please try again: ");
@@ -407,9 +407,9 @@ namespace Trivia_Stage1.UI
                 player.Password=newPassword; //החלפת הסיסמה של השחקן בסיסמה החדשה שהכניס
                 db.SaveChanges(); //שמירת השינויים בdatabase
                 Console.WriteLine("Press B/b to change your mail, C/c to change your name, A/a to change you password, or any other key to get back.");
-                c = Console.ReadKey().KeyChar; //קליטת מקש מהמשתנה
+                c = Console.ReadKey().KeyChar; //קליטת תו מהמשתנה
             }
-            Console.ReadKey(true); //יציאה מהמסך לאחר קליטת תו
+            Console.ReadKey(true); //יציאה מהמסך לאחר קליטת תו אם השחקן החליט שהוא רוצה לצאת
             
 
         }
