@@ -70,3 +70,5 @@ INSERT INTO [Questions] (subjectCode, text, correctAns, wrongAns1, wrongAns2, wr
 
 INSERT INTO [Questions] (subjectCode, text, correctAns, wrongAns1, wrongAns2, wrongAns3, createdBy, statusCode) values(5, 'What is the name og the principle in Ramon High School?', 'Hana', 'Leah', 'Rebecca','Moshe',1,1);
 
+
+

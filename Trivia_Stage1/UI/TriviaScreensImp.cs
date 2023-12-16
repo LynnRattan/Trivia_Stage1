@@ -13,7 +13,7 @@ namespace Trivia_Stage1.UI
         //Place here any state you would like to keep during the app life time
         //For example, player login details...
         Player player; //עצם מטיפוס player השחקן המחובר
-        TriviaDBContext db = new TriviaDBContext(); 
+        TriviaDBContext db = new TriviaDBContext(); //אובייקט מטיפוס TriviaDBContext שעושים עליו את הפעולות במחלקה זו בהמשך
 
         //Implememnt interface here
         public bool ShowLogin() //לין
@@ -29,20 +29,27 @@ namespace Trivia_Stage1.UI
 
 
            
-                player = db.Login(name,mail, password);   //השמת משתמש בעצם של המשתמש player שהפרטים שלו הם המייל והסיסמה שהוכנסו
-                //אם לא תקין
-                while (player == null)                                     //אם לא נמצא השחקן בעל המייל והסיסמה יש לנסות שוב
+                player = db.Login(name,mail, password);   //השמת משתמש בעצם של המשתמש player שהפרטים שלו הם השם, מייל והסיסמה שהוכנסו
+                                                          
+            char c = ' ';
+                while  (player == null)                                     //אם לא נמצא השחקן בעל השם,מייל והסיסמה יש לנסות שוב או לצאת
                 {
-                    Console.WriteLine("Cannot be found. Enter again.");
-                Console.WriteLine("Enter name");
-                name = Console.ReadLine(); //קליטת שם מחדש
-                Console.WriteLine("Enter mail");
+                Console.WriteLine("Cannot be found. Press (B)ack to go back or any other key to log in again...");                                  
+                c = Console.ReadKey().KeyChar;
+                if (c.ToString().ToLower() != "b") //אם המשתמש רוצה לנסות להתחבר שוב
+                {
+                    Console.WriteLine("Enter name");
+                    name = Console.ReadLine(); //קליטת שם מחדש
+                    Console.WriteLine("Enter mail");
                     mail = Console.ReadLine(); //קליטת מייל מחדש
                     Console.WriteLine("Enter password");
                     password = Console.ReadLine(); //קליטת סיסמה מחדש
-                    player = db.Login(name,mail, password);
+                    player = db.Login(name, mail, password);
                 }
-                return true;
+                else 
+                    return false; //אם לא רוצה לנסות להתחבר שוב יציאה מהמסך
+                }
+                return true; //אם ההתחברות עברה מעבר למסך תפריט של שחקן מחובר
             
             
         }
@@ -59,7 +66,7 @@ namespace Trivia_Stage1.UI
             //user choose to go back to menu
 
             char c = ' ';       
-            while (c != 'B' && c != 'b' && player == null)
+            while (c.ToString().ToLower() != "b" && player == null) //כל עוד אין שחקן מחובר והמשתמש לא רוצה לצאת מהמסך
             {
                 //Clear screen
                 ClearScreenAndSetTitle("Signup");
@@ -91,7 +98,7 @@ namespace Trivia_Stage1.UI
                     Console.ForegroundColor= ConsoleColor.Red;  
                     Console.Write("Password must be at least 4 characters! Please try again: ");
                     Console.ResetColor();   
-                    password = Console.ReadLine();                //קליטת סיסמה חדשה
+                    password = Console.ReadLine();                //קליטת סיסמה מחדש
                 }
 
                 
@@ -123,12 +130,14 @@ namespace Trivia_Stage1.UI
 
 
                     //Get another input from user
-                    c = Console.ReadKey(true).KeyChar;  //קליטה של מקש מהמשתנה, אם לא לחץ על B יש הרשמה מחדש
+                    c = Console.ReadKey().KeyChar; //קליטה של מקש מהמשתמש אם לא לחץ על יש הרשמה מחדש b 
+                    if (c.ToString().ToLower() == "b") //אם כן לחץ על B אז יציאה מהמסך
+                        return false; 
                 }
             }
             //return true if signup suceeded!
             Console.WriteLine("Sign Up suceeded!");   //הודעה שההרשמה הצליחה
-            return true;
+            return true; //מעבר למסך הבא
 
 
         }
@@ -139,16 +148,28 @@ namespace Trivia_Stage1.UI
             if (player.Points == 100 || player.LevelCode==3)  //אם לשחקן יש 100 נקודות הוא יכול להוסיף שאלה
             {
                 ClearScreenAndSetTitle("Add a Question");
+                int subject; //יצירת משתנה נושא
                 Console.WriteLine("Choose a subject: 1 - Sports, 2 - Politics, 3 - History, 4 - Science, 5 - Ramon HS");
-                int subject = int.Parse(Console.ReadLine());     //קליטת נושא שאלה
-                while (subject < 1 || subject > 5)  //כל עוד מספר הנושא לא תקין ולא קיים בטבלת נושאים יש לנסות שוב
+                try
+                {
+                   subject = int.Parse(Console.ReadLine());     //קליטת נושא שאלה
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message); //הודעת שגיאה
+                    Console.WriteLine("Does not exist.Please try again."); //הודעת שגיאה
+                    Console.WriteLine("Choose a subject: 1 - Sports, 2 - Politics, 3 - History, 4 - Science, 5 - Ramon HS");
+                    subject = int.Parse(Console.ReadLine());  //קליטת נושא מחדש
+                }
+               
+                while (subject<1 || subject>5)  //כל עוד מספר הנושא לא תקין ולא קיים בטבלת נושאים יש לנסות שוב
                 {
                     Console.WriteLine("Does not exist.Please try again.");
                     Console.WriteLine("Choose a subject: 1 - Sports, 2 - Politics, 3 - History, 4 - Science, 5 - Ramon HS");
                     subject = int.Parse(Console.ReadLine());  //קליטת נושא מחדש
 
                 }
-                Console.WriteLine("Add the question's text: ");
+                Console.WriteLine("Add the question's text (if you do not want to add a question press b) ");
                 string text = Console.ReadLine();   //קליטת השאלה
                 if (text.ToLower() == "b")  //אם השחקן לוחץ על b או B כלומר הוא רוצה לצאת ולא להוסיף שאלה אז הפעולה תיפסק והוא יצא מהמסך
                 {
@@ -175,13 +196,13 @@ namespace Trivia_Stage1.UI
                
                 player.Points = 0;  //איפוס הנקודות של השחקן
             }
-            else  //אם לשחקן יש פחות מ100 נקודות הוא לא יכול להוסיף שאלה
+            else  //אם לשחקן יש פחות מ100 נקודות והוא לא מנהל אז הוא לא יכול להוסיף שאלה
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("You do not have permission to view this page");  //הודעה שאין גישה למסך זה
                 Console.ResetColor();
                 Console.WriteLine("Press any key to continue");
-                Console.ReadKey(true);
+                Console.ReadKey(true); //יציאה מהמסך למסך תפריט
             }
         }
 
@@ -196,7 +217,8 @@ namespace Trivia_Stage1.UI
                 {
                     ClearScreenAndSetTitle("Pending Questions");
                     Console.WriteLine("No pending questions. Press any key to get back.");
-                    Console.ReadKey(true);
+                    char c = Console.ReadKey(true).KeyChar; //יציאה מהמסך
+                    
                 }
                 
 
@@ -242,7 +264,7 @@ namespace Trivia_Stage1.UI
                 Console.WriteLine("You do not have permission to view this page");
                 Console.ResetColor();
                 Console.WriteLine("Press any key to continue");
-                Console.ReadKey(true);
+                Console.ReadKey(true); //יציאה מהמסך לאחר קליטת תו
             }
         }
         public void ShowGame()//שירי
@@ -259,7 +281,7 @@ namespace Trivia_Stage1.UI
                 Console.WriteLine($"3) {answers[2]}");
                 Console.WriteLine($"4) {answers[3]}");
                 Console.WriteLine("Choose the correct answer by pressing its number.");
-                int answer = 0;
+                int answer = 0; //הגדרת משתנה שהוא התשובה שהשחקן בוחר
                 try
                 {
                     answer = int.Parse(Console.ReadLine()); //קליטת הבחירה של התשובה מהשחקן
@@ -303,7 +325,8 @@ namespace Trivia_Stage1.UI
                 char c = Console.ReadKey().KeyChar; //קליטת מקש מהשחקן
                 if(c != 'A' && c!='a') //אם השחקן לא לחץ על a או A  כלומר הוא לא רוצה להמשיך לשחק, שמירת השינויים ויציאה ממסך המשחק
                 {
-                    db.GetPlayerByMail(player.PlayerMail).Points = player.Points;
+                    db.GetPlayerById(player.PlayerId).Points = player.Points;
+                    db.SaveChanges();
                     return;
                 }
 
@@ -320,10 +343,14 @@ namespace Trivia_Stage1.UI
             {
                 Console.WriteLine("Not loged in. Press any key to get back...");
                 Console.ReadKey(true);
+                return;
             }
-            Console.WriteLine($"player mail: {player.PlayerMail} \nname: {player.Name}  \npassword: {player.Password}  \nlevel: {player.LevelCode}  \npoints: {player.Points}"); //הדפסת פרטי השחקן המחובר
+           
+                Console.WriteLine($"player mail: {player.PlayerMail} \nname: {player.Name}  \npassword: {player.Password}  \nlevel: {player.LevelCode}  \npoints: {player.Points}"); //הדפסת פרטי השחקן המחובר
+            
+           
             char c = ' ';
-            Console.WriteLine("Press B to change your mail, C/c to change your name, A/a to change you password, or any other key to continue");
+            Console.WriteLine("Press B/b to change your mail, C/c to change your name, A/a to change you password, or any other key to get back.");
             c = Console.ReadKey().KeyChar; //קליטה של מקש מהשחקן
            while (c == 'B' || c == 'b') //אם השחקן רוצה לשנות את המייל שלו
             {
@@ -341,7 +368,7 @@ namespace Trivia_Stage1.UI
                 { Console.WriteLine("Already your mail."); }
                 player.PlayerMail = newMail; //החלפת מייל השחקן למייל החדש שהכניס
                 db.SaveChanges();  //שמירת שינויים בdatabase
-                Console.WriteLine("Press B to change your mail, C/c to change your name, A/a to change you password, or any other key to continue");
+                Console.WriteLine("Press B/b to change your mail, C/c to change your name, A/a to change you password, or any other key to get back.");
                 c = Console.ReadKey().KeyChar; //קליטת מקש מהשחקן
 
             }
@@ -360,7 +387,7 @@ namespace Trivia_Stage1.UI
                 if (newName == player.Name) { Console.WriteLine("Already your name."); } //אם השם החדש שהכניס השחקן זהה לשם שכבר יש לו, הודעה בהתאם
                 player.Name=newName; //החלפת שם השחקן בשם החדש שהכניס
                 db.SaveChanges(); //שמירת השינויים בdatabase
-                Console.WriteLine("Press B to change your mail, C/c to change your name, A/a to change you password, or any other key to continue");
+                Console.WriteLine("Press B/b to change your mail, C/c to change your name, A/a to change you password, or any other key to get back.");
                 c = Console.ReadKey().KeyChar; //קליטת מקש מהשחקן
 
             }
@@ -379,10 +406,11 @@ namespace Trivia_Stage1.UI
                 if (newPassword == player.Password) { Console.WriteLine("Already your password."); } //אם הסיסמה החדשה שהכניס השחקן זהה לזאת שכבר יש לו, הודעה בהתאם
                 player.Password=newPassword; //החלפת הסיסמה של השחקן בסיסמה החדשה שהכניס
                 db.SaveChanges(); //שמירת השינויים בdatabase
-                Console.WriteLine("Press B to change your mail, C/c to change your name, A/a to change you password, or any other key to continue");
+                Console.WriteLine("Press B/b to change your mail, C/c to change your name, A/a to change you password, or any other key to get back.");
                 c = Console.ReadKey().KeyChar; //קליטת מקש מהמשתנה
             }
-            Console.ReadKey(true);
+            Console.ReadKey(true); //יציאה מהמסך לאחר קליטת תו
+            
 
         }
 

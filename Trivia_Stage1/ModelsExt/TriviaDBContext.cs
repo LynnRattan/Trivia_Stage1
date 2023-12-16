@@ -14,6 +14,11 @@ namespace Trivia_Stage1.Models
             return this.Players.ToList();
         }
 
+        public Player GetPlayerById(int id)
+        {
+            return this.Players.Where(p => p.PlayerId == id).FirstOrDefault();
+        }
+
         public Player Login(string name,string mail, string password) // פעולה המקבלת שם, מייל וסיסמה ובודקת אם קיים שחקן בטבלת שחקנים בעל השם, המייל והסיסמה האלה ומחזירה את השחקן אם כן
         {
 
