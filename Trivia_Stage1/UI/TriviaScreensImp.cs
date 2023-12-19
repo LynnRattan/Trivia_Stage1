@@ -112,7 +112,7 @@ namespace Trivia_Stage1.UI
                 {
                   player = db.SignUp(mail, password, name);     //יצירת משתמש חדש עם הפרטים שהוזנו ושמירה שלו בdatabase
                 }
-                catch (Exception ex)   //אם הפעולה של ההרשמה SignUp נכשלה
+                catch (Exception ex)   //אם הפעולה של ההשמה עם SignUp נכשלה
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Failed to signup! Email may already exist in DB!"); //הודעת שגיאה
