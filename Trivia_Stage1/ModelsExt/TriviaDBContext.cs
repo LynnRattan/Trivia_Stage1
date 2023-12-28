@@ -72,7 +72,7 @@ namespace Trivia_Stage1.Models
         public Question RandomQusetion() //פעולה שמחזירה שאלה מתוך רשימה של שאלות בטבלת שאלות באופן רנדומלי
         {
             List <Question> q = new List<Question>(); 
-            q=this.Questions.ToList();
+            q=this.Questions.Where(x=>x.Status==3).ToList();
             Random random = new Random();   
             int place = random.Next(0,q.Count);
             return q[place];

@@ -120,7 +120,7 @@ namespace Trivia_Stage1.UI
                 }
 
 
-                if (player == null)    //אם הפעולה של ההרשמה SignUp נכשלה
+                if (player == null)   //אם הפעולה של ההרשמה SignUp נכשלה
                 {
                     //Provide a proper message for example:
                     Console.ForegroundColor = ConsoleColor.Red;
